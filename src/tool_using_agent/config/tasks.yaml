@@ -1,17 +1,48 @@
-research_task:
+analyze_project:
   description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is {current_year}.
-  expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
-  agent: researcher
+    Analyze the project located at {project_path}.
+    User request: {analysis_goal}.
 
-reporting_task:
-  description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    MANDATORY WORKFLOW:
+
+    Step 1: CALL "List Directory" tool with path: {project_path}
+            Study the output carefully. Note every file and folder listed.
+
+    Step 2: CALL "Read File" tool ONLY on files that appeared in Step 1.
+            NEVER attempt to read a file that was not listed.
+            If a read_file call returns an error, skip that file entirely
+            and do NOT include it in your report.
+
+    Step 3: CALL "Web Search" for relevant best practices if needed.
+
+    Step 4: Write analysis based ONLY on files successfully read in Step 2.
+            If a file's read returned an error OR returned no content,
+            do not write ANY code or analysis for that file.
+            Only quote code that appeared verbatim in a successful Read File output.
+
+    Step 5: CALL "Write Report" tool ONCE to save findings.
+            Do not call Write Report more than once.
+
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    A markdown report grounded exclusively in files that were successfully
+    read. Every finding must reference a real file from the directory listing.
+    No invented files, no generic advice disconnected from the actual codebase.
+  agent: project_analyst
+
+
+
+
+
+  # expected_output: >
+  #   A well-structured markdown report saved to the reports/ folder, containing:
+  #   - Executive Summary
+  #   - Project Structure Overview  
+  #   - Key Findings & Issues (with file references)
+  #   - Strengths
+  #   - Prioritized Recommendations (with estimated effort: Low/Medium/High)
+  #   - Suggested Next Steps
+ 
+  #  Step 2: CALL "Read File" tool ONLY on files that appeared in Step 1.
+  #             NEVER attempt to read a file that was not listed.
+  #             If a read_file call returns an error, skip that file entirely
+  #             and do NOT include it in your report.

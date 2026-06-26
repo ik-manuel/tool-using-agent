@@ -34,13 +34,13 @@ class WebSearchTool(BaseTool):
             if response.get("answer"):
                 output += f"Quick Answer: {response['answer']}\n\n"
 
-                # Include top results
-                for i, result in enumerate(response.get("results", [], 1)):
-                    output += f"{i}. {result.get('title', 'No title')}\n"
-                    output += f"   URL: {result.get('url', '')}\n"
-                    output += f"   {result.get('content', '')[:300]}\n\n"
+            # Include top results
+            for i, result in enumerate(response.get("results", []), 1):
+                output += f"{i}. {result.get('title', 'No title')}\n"
+                output += f"   URL: {result.get('url', '')}\n"
+                output += f"   {result.get('content', '')[:300]}\n\n"
 
-                return output.strip() if output.strip() else f"No results found for {query}"
+            return output.strip() if output.strip() else f"No results found for {query}"
             
         except Exception as e:
             return f"Search failed: {str(e)}"
