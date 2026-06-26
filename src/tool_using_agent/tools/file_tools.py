@@ -2,10 +2,10 @@ from crewai.tools import BaseTool
 from pydantic import BaseModel, Field
 # from typing import List, Optional
 import os
-from datetime import datetime
+# from datetime import datetime
 
 # ====================== SAFETY CONSTRAINTS ======================
-BLOCKED_PATHS = ['.env', '.git', 'node_modules', '__pycache__']
+BLOCKED_PATHS = ['.env', '.git', 'node_modules', '__pycache__', '.venv', 'venv', 'vendor']
 MAX_FILE_SIZE_KB = 50
 ALLOWED_EXTENSIONS = ['.py', '.php', '.js', '.ts', '.md', '.css', '.json', '.yaml', '.txt']
 
@@ -68,7 +68,7 @@ class ListDirectoryTool(BaseTool):
                     for file in sorted(files):
                         file_path = os.path.join(root, file)
                         if is_allowed_extension(file_path) and not is_path_blocked(file):
-                            structure.append(f"{indent}    📄 {file}")
+                            structure.append(f"{indent}    📄 {file} → FULL PATH: {os.path.join(root, file)}")
 
             return "\n".join(structure[:300]) # Limit total lines
         
